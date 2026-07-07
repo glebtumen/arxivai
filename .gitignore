@@ -1,0 +1,13 @@
+__pycache__/
+*.pyc
+.env
+.env.local
+node_modules/
+.next/
+storage/media/*
+!storage/media/.gitkeep
+*cookies*.txt
+.venvbackend/
+/test
+*.mp4
+*venv*

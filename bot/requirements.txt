@@ -1,0 +1,5 @@
+aiogram==3.13.1
+httpx==0.27.2
+python-dotenv==1.0.1
+# Only required if you set TELEGRAM_PROXY_URL to a socks5:// proxy in bot/.env
+# aiohttp-socks==0.9.1
