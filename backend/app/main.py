@@ -12,8 +12,6 @@ from .routes import items
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-# Create tables if they don't exist yet (simple approach for MVP, no migrations)
-Base.metadata.create_all(bind=engine)
 
 app = FastAPI(title="ArchiveBot API")
 
