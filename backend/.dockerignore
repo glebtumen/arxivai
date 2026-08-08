@@ -1,0 +1,8 @@
+venv*
+.env.example
+instagram_cookies.txt
+.git
+.dockerignore
+Dockerfile
+__pycache__
+*.pyc

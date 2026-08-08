@@ -44,7 +44,6 @@ python bot.py
 ```bash
 cd web
 npm install
-cp .env.local.example .env.local
 npm run dev
 ```
 Open http://localhost:3000
@@ -88,7 +87,7 @@ This means the bot process can't reach `api.telegram.org` — it's a network
 issue, not a code bug. Telegram is blocked/throttled on some networks/ISPs
 (common in certain countries). Fixes:
 1. Try a VPN, or
-2. Set a proxy in `bot/.env`:
+2. Set a proxy in `.env`:
    ```
    TELEGRAM_PROXY_URL=socks5://127.0.0.1:1080
    ```
@@ -109,7 +108,7 @@ by giving yt-dlp your own logged-in session via a cookies file:
    logged into instagram.com, export cookies in **Netscape format**.
 2. Save the exported file as `backend/instagram_cookies.txt` (this path is
    already git-ignored, so it won't be committed).
-3. Set `INSTAGRAM_COOKIES_FILE=instagram_cookies.txt` in `backend/.env`
+3. Set `INSTAGRAM_COOKIES_FILE=instagram_cookies.txt` in `.env`
    (already set by default if you copied `.env.example`).
 4. Restart the backend (`uvicorn app.main:app --reload --port 8000`).
 
