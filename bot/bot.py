@@ -23,8 +23,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN", "")
-API_BASE_URL = os.getenv("API_BASE_URL", "http://localhost:8000").rstrip("/")
-WEB_BASE_URL = os.getenv("WEB_BASE_URL", "http://localhost:3000").rstrip("/")
+API_BASE_URL = os.getenv("API_BASE_URL").rstrip("/")
+WEB_BASE_URL = os.getenv("BOT_WEB_BASE_URL").rstrip("/")
 # Optional: set this if Telegram's API is blocked/slow on your network, e.g.
 # TELEGRAM_PROXY_URL=socks5://127.0.0.1:1080  or  http://user:pass@host:port
 TELEGRAM_PROXY_URL = os.getenv("TELEGRAM_PROXY_URL", "").strip() or None

@@ -48,7 +48,7 @@ def analyze_content(title: str, description: str, transcript: str = "") -> dict:
         "STRICT JSON only, no markdown, no extra commentary, in this exact "
         "shape:\n"
         '{"title": "short catchy title (max 8 words)", '
-        '"summary": "2-3 sentence summary of what the content is about", '
+        '"summary": "summary of what the content is about, if its recipie then do recipie, if its a tutorial then make full tutorial, make it understandable to know what the content is about", '
         '"tags": ["tag1", "tag2", "tag3"]}\n\n'
         f"Tags MUST be chosen only from this fixed list, pick 1 to 3 most "
         f"relevant tags: {tags_list_str}"

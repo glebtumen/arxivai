@@ -10,7 +10,7 @@ class Settings(BaseSettings):
     openrouter_whisper_model: str = "openai/whisper-large-v3"
     site_url: str = "http://localhost:3000"
     site_title: str = "ArchiveBot"
-    media_dir: str = "../storage/media"
+    media_dir: str = "/storage/media"
     web_base_url: str = "http://localhost:3000"
     api_base_url: str = "http://localhost:8000"
 

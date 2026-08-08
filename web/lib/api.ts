@@ -1,5 +1,8 @@
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8000";
+  process.env.API_BASE_URL;
+
+const NEXT_PUBLIC_API_BASE_URL =
+  process.env.NEXT_PUBLIC_API_BASE_URL;
 
 export interface Item {
   id: number;
@@ -16,7 +19,7 @@ export interface Item {
 }
 
 export function mediaUrl(relativePath: string): string {
-  return `${API_BASE_URL}/media/${relativePath}`;
+  return `${NEXT_PUBLIC_API_BASE_URL}/media/${relativePath}`;
 }
 
 export async function fetchItems(): Promise<Item[]> {
