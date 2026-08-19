@@ -1,9 +1,6 @@
 const API_BASE_URL =
   process.env.API_BASE_URL;
 
-const NEXT_PUBLIC_API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL;
-
 export interface Item {
   id: number;
   url: string;
@@ -18,8 +15,8 @@ export interface Item {
   created_at: string;
 }
 
-export function mediaUrl(relativePath: string): string {
-  return `${NEXT_PUBLIC_API_BASE_URL}/media/${relativePath}`;
+export function mediaUrl(url: string): string {
+  return url;
 }
 
 export async function fetchItems(): Promise<Item[]> {

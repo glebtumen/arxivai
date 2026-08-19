@@ -44,8 +44,8 @@ class Item(Base):
     transcript = Column(Text, nullable=True)  # spoken transcript (Whisper)
     tags = Column(JSON, default=list)  # list[str]
 
-    frame_paths = Column(JSON, default=list)  # list[str] - relative paths under /media
-    video_path = Column(String, nullable=True)
+    frame_paths = Column(JSON, default=list)  # list[str] - public S3 URLs
+    video_path = Column(String, nullable=True)  # public S3 URL
 
     created_at = Column(DateTime, default=_utcnow)
     updated_at = Column(DateTime, default=_utcnow, onupdate=_utcnow)
