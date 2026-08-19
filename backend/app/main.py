@@ -3,9 +3,8 @@ import os
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
-from .config import settings
+from .config import settings, validate_settings
 from .database import Base, engine
 from .routes import items
 
@@ -25,23 +24,72 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-media_dir = os.path.abspath(settings.media_dir)
-os.makedirs(media_dir, exist_ok=True)
-app.mount("/media", StaticFiles(directory=media_dir), name="media")
-
 app.include_router(items.router)
 
 
 @app.on_event("startup")
 def _startup_checks():
-    if not settings.openrouter_api_key:
-        logger.warning(
-            "OPENROUTER_API_KEY is not set. AI analysis will fail until you "
-            "set it in backend/.env"
-        )
-    logger.info("Media directory: %s", media_dir)
+    try:
+        problems = validate_settings()
+        if problems:
+            logger.info(
+                "Settings sanity-check finished: %d issue(s) found "
+                "(%d error(s), %d warning(s)).",
+                len(problems),
+                sum(1 for _, lvl, _ in problems if lvl == "error"),
+                sum(1 for _, lvl, _ in problems if lvl == "warning"),
+            )
+            for name, level, message in problems:
+                if level == "error":
+                    logger.error("[%s] %s", name, message)
+                else:
+                    logger.warning("[%s] %s", name, message)
+
+            errors = [p for p in problems if p[1] == "error"]
+            if errors and settings.fail_fast:
+                raise SystemExit(
+                    f"Backend cannot start due to {len(errors)} configuration "
+                    "error(s) above (FAIL_FAST is enabled). Fix backend/.env "
+                    "and restart."
+                )
+        else:
+            logger.info("Settings sanity-check passed: all settings look good.")
+    except SystemExit:
+        raise
+    except Exception as e:
+        logger.error("Settings sanity-check failed: %s", e)
+
+    logger.info("Media scratch directory: %s", os.path.abspath(settings.media_dir))
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok"}
+    problems = validate_settings()
+    problem_status = {
+        name: "error" if level == "error" else "warning"
+        for name, level, _ in problems
+    }
+    all_setting_names = (
+        "DATABASE_URL",
+        "MEDIA_DIR",
+        "OPENROUTER_API_KEY",
+        "OPENROUTER_MODEL",
+        "OPENROUTER_WHISPER_MODEL",
+        "SITE_URL",
+        "WEB_BASE_URL",
+        "API_BASE_URL",
+        "INSTAGRAM_COOKIES_FILE",
+        "S3_YANDEX_ENDPOINT",
+        "S3_YANDEX_REGION",
+        "S3_YANDEX_IDENT_KEY",
+        "S3_YANDEX_SECRET_KEY",
+        "S3_YANDEX_BUCKET",
+    )
+    settings_status = {
+        name: problem_status.get(name, "ok") for name in all_setting_names
+    }
+    has_errors = any(status == "error" for status in settings_status.values())
+    return {
+        "status": "degraded" if has_errors else "ok",
+        "settings": settings_status,
+    }
